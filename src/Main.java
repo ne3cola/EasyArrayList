@@ -3,7 +3,6 @@
 public class Main {
     public static void main(String[] args) {
 
-
         EasyArrayList<String> list = new EasyArrayList<>();
         System.out.println("Заполняем список");
         list.add("A");
@@ -60,7 +59,7 @@ public class Main {
         System.out.println("Получение индекса по объекту: " + list.getIndex("F"));
         System.out.println("Получение индекса по объекту которого нет в списке: " + list.getIndex("M"));
         System.out.println("Поиск элемента: " + list.contains("F"));
-        System.out.println("Получение размера листа без нулов только объекты: " + list.size());
+        System.out.println("Получение размера листа без NULL только объекты: " + list.size());
         System.out.println("Проверяем список пустой он или нет: " + list.isEmpty());
 
         System.out.println("Добавляем весь лист в новый лист");
@@ -240,6 +239,7 @@ public class Main {
         System.out.println(list3);
 
         System.out.println();
+        System.out.println("Добавляем на несуществующий индекс");
         list3.add(7, "P");
         System.out.println(list3);
 

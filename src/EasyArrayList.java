@@ -3,9 +3,8 @@ import java.util.Arrays;
 public class EasyArrayList<E> {
 
     private static final int DEF_SIZE = 10;
-    private int size;
     private Object[] array;
-    private int indexIn = 0;
+    private int size = 0;
 
     public EasyArrayList() {
         array = new Object[DEF_SIZE];
@@ -24,11 +23,11 @@ public class EasyArrayList<E> {
      */
     public void add(E e) {
         if (e == null) return;
-        if (indexIn == array.length) {
+        if (size == array.length) {
             array = Arrays.copyOf(array, array.length + array.length / 2);
         }
-        array[indexIn] = e;
-        indexIn++;
+        array[size] = e;
+        size++;
     }
 
     /**
@@ -38,19 +37,19 @@ public class EasyArrayList<E> {
      * @param e     Элемент, который будет добавлен в список
      */
     public void add(int index, E e) {
-        if (indexIn == array.length) {
+        if (size == array.length) {
             array = Arrays.copyOf(array, array.length + array.length / 2);
         }
-        if (index > indexIn) {
+        if (index > size) {
             System.out.println("Указан не правильный индекс");
-        } else if (index == indexIn) {
+        } else if (index == size) {
             add(e);
         } else {
-            for (int i = indexIn; i > index; i--) {
+            for (int i = size; i > index; i--) {
                 array[i] = array[i - 1];
             }
             array[index] = e;
-            indexIn++;
+            size++;
         }
     }
 
@@ -67,33 +66,33 @@ public class EasyArrayList<E> {
 
     /**
      * Добавляем в список другой список по индексу
+     *
      * @param index Место куда мы хотим сделать вставку
-     * @param list Список, который мы хотим вставить
+     * @param list  Список, который мы хотим вставить
      */
     public void addAll(int index, EasyArrayList<E> list) {
 
         if (index == 0) {
-            for (int i = 0; i < indexIn; i++) {
+            for (int i = 0; i < size; i++) {
                 list.add((E) array[i]);
 
             }
             array = Arrays.copyOf(list.array, list.array.length);
-            indexIn = list.indexIn;
-        } else if (index == indexIn) {
+            size = list.size;
+        } else if (index == size) {
             addAll(list);
-        }
-        else {
-            int end = list.indexIn + index;
-            int arraySize = indexIn;
+        } else {
+            int end = list.size + index;
+            int arraySize = size;
             int indexSet = index;
-            int listSize = list.indexIn;
+            int listSize = list.size;
             while (end < arraySize + listSize) {
                 array[end] = array[index];
                 end++;
                 index++;
             }
-            indexIn = end;
-            for (int i = 0; i < list.indexIn; i++) {
+            size = end;
+            for (int i = 0; i < list.size; i++) {
                 array[indexSet] = list.get(i);
                 indexSet++;
             }
@@ -103,13 +102,13 @@ public class EasyArrayList<E> {
 
     /**
      * Получаем отрезок нашего листа
+     *
      * @param start Откуда начинается отрезок(включая стартовый индекс)
-     * @param end Где заканчивается отрезок(не включая конечный индекс)
+     * @param end   Где заканчивается отрезок(не включая конечный индекс)
      * @return Новый список полученный из отрезка который мы указали
      */
     public EasyArrayList<E> subList(int start, int end) {
         EasyArrayList<E> sub = new EasyArrayList<>();
-        int i = 0;
         while (start < end) {
             sub.add((E) array[start]);
             start++;
@@ -125,7 +124,7 @@ public class EasyArrayList<E> {
      */
     public int lastIndexOf(E e) {
         int index = -1;
-        for (int i = 0; i < indexIn; i++) {
+        for (int i = 0; i < size; i++) {
             if (array[i].equals(e)) {
                 index = i;
             }
@@ -139,17 +138,17 @@ public class EasyArrayList<E> {
      * @param index Позиция элемента в списке
      */
     public void remove(int index) {
-        if (array.length > indexIn * 2) {
-            array = Arrays.copyOf(array, array.length - indexIn + 2);
+        if (array.length > size * 2) {
+            array = Arrays.copyOf(array, array.length - size + 2);
         }
-        if (index > indexIn + 1) {
+        if (index > size + 1) {
             System.out.println("Указан не правильный индекс");
         }
-        for (int i = index; i < indexIn; i++) {
+        for (int i = index; i < size; i++) {
             array[i] = array[i + 1];
         }
-        array[indexIn] = null;
-        indexIn--;
+        array[size] = null;
+        size--;
     }
 
     /**
@@ -158,17 +157,17 @@ public class EasyArrayList<E> {
      * @param e Искомы элемент в списке
      */
     public void remove(E e) {
-        if (array.length > indexIn * 2) {
-            array = Arrays.copyOf(array, array.length - indexIn + 2);
+        if (array.length > size * 2) {
+            array = Arrays.copyOf(array, array.length - size + 2);
         }
         if (getIndex(e) < 0) {
             System.out.println("Такого элемента в списке нет!");
         } else {
-            for (int i = getIndex(e); i < indexIn; i++) {
+            for (int i = getIndex(e); i < size; i++) {
                 array[i] = array[i + 1];
             }
-            array[indexIn] = null;
-            indexIn--;
+            array[size] = null;
+            size--;
         }
     }
 
@@ -176,10 +175,10 @@ public class EasyArrayList<E> {
      * Очищаем данный список
      */
     public void clear() {
-        for (int i = 0; i < indexIn; i++) {
+        for (int i = 0; i < size; i++) {
             array[i] = null;
         }
-        indexIn = 0;
+        size = 0;
     }
 
     /**
@@ -188,7 +187,7 @@ public class EasyArrayList<E> {
      * @return Количество элементов в данном списке
      */
     public int size() {
-        return indexIn;
+        return size;
     }
 
     /**
@@ -197,7 +196,7 @@ public class EasyArrayList<E> {
      * @return tru/false в зависимости от пустой ли список или нет
      */
     public boolean isEmpty() {
-        return indexIn == 0;
+        return size == 0;
     }
 
     /**
@@ -207,7 +206,7 @@ public class EasyArrayList<E> {
      * @return Найденный элемент или NULL в случае если элемент не найден
      */
     public Object get(int index) {
-        if (index > indexIn) {
+        if (index > size) {
             return null;
         } else {
             return array[index];
@@ -221,7 +220,7 @@ public class EasyArrayList<E> {
      * @return Числовое значение(Позиция на которой находится искомый элемент), в случае если элемента нет возвращается -1
      */
     public int getIndex(E e) {
-        for (int i = 0; i < indexIn; i++) {
+        for (int i = 0; i < size; i++) {
             if (array[i].equals(e)) {
                 return i;
             }
@@ -237,7 +236,7 @@ public class EasyArrayList<E> {
      * @param e     Элемент который должен быть сохранен по заданной позиции
      */
     public void set(int index, E e) {
-        if (index > indexIn) {
+        if (index > size) {
             System.out.println("Индекс объекта не найден");
         } else {
             array[index] = e;
@@ -262,14 +261,14 @@ public class EasyArrayList<E> {
 
     @Override
     public String toString() {
-        int iMax = indexIn - 1; // array.length для проверки и отображения NULL в списке
+        int iMax = size - 1; // array.length для проверки и отображения NULL в списке
         if (iMax == -1) {
             return "[]";
         }
         StringBuilder builder = new StringBuilder();
         builder.append("[");
-        for (int i = 0; i < indexIn; i++) { // array.length
-            builder.append(String.valueOf(array[i]));
+        for (int i = 0; i < size; i++) { // array.length
+            builder.append(array[i]);
             if (i == iMax) {
                 builder.append("]");
             } else {
